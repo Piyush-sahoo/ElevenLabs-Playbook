@@ -80,6 +80,40 @@ Outbound is triggered via the [outbound SIP API](https://elevenlabs.io/docs/api-
 | **Human → AI** | Front-of-funnel triage | Your IVR routes to the ElevenLabs DID |
 | **AI → AI** | Specialist sub-agents | `transfer_to_agent` system tool — context carries over |
 
+### Human handoff — what to actually wire up
+
+The #1 reason production voice agents fail is a bad handoff. The caller is already frustrated, the agent has been struggling, and now they get transferred to a human who has **zero context**. They repeat their whole story. The handoff is what kills the conversation, not the AI.
+
+A production-grade handoff has four pieces:
+
+1. **Trigger criteria** — defined in the agent's system prompt or workflow:
+   - Customer explicitly asks for a human ("agent", "manager", "real person")
+   - Sentiment turns negative (repeated frustration markers)
+   - Agent can't resolve after 2 tool retries
+   - Topic is out of scope (regulated advice, complaints, fraud)
+   - Caller is at a known high-value account (CRM lookup result)
+
+2. **Pre-transfer context capture** — before calling the transfer tool, use `update_state` to capture:
+   - Customer name + account ID
+   - Issue summary (one sentence the agent generates)
+   - What was already tried
+   - Sentiment / urgency signal
+
+3. **The transfer itself** — pick the right pattern:
+   - **Warm transfer** (`transfer_to_human` with context): use when the human needs to know what happened. Slower (~3–8 s bridge) but the experience is seamless.
+   - **Cold transfer** (`transfer_to_number`, SIP REFER): use when routing to a queue / department where context isn't preserved. Faster, but the caller starts over.
+   - **Transfer to agent** (`transfer_to_agent`): for handoffs to another ElevenLabs specialist agent — context carries automatically.
+
+4. **Post-transfer hand-off payload** — send the captured `update_state` data to the receiving system (CRM, helpdesk ticket, agent screen-pop) via the post-call webhook, so the human sees it the moment the call lands. Without this, the warm transfer is just a faster cold transfer.
+
+**A few production rules that aren't obvious:**
+
+- **Always offer the handoff, never force it.** "Would you like me to transfer you to a specialist?" beats silent escalation.
+- **Set a hard handoff cap** — after N failed tool retries (typically 2), escalate automatically. Don't let the agent loop.
+- **Test the handoff from a real phone.** Browser tester won't surface SIP REFER quirks.
+- **Measure handoff rate per intent.** If 40 % of "check my order" calls escalate, the tool is broken, not the prompt.
+- **Have a human-fallback number that's always answered.** A handoff into a queue with no agents is worse than no handoff.
+
 ---
 
 ## SIP trunk provider
