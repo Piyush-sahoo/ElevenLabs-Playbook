@@ -65,6 +65,12 @@ Numbers are illustrative — confirm against your plan's per-credit rate.
 
 The Agents Platform bundles TTS + STT + agent orchestration into a single per-minute price. LLM tokens are passed through (you pay your LLM provider directly). Telephony (SIP trunk) is billed by your trunk provider separately.
 
+---
+
+## Telephony pricing — India
+
+For India deployments, **[Vobiz](https://www.vobiz.ai/) lands around ₹0.45 / minute (~$0.005) — or lower at scale.** That makes telephony the smallest line item in the stack; confirm exact rates with the provider for your contract size.
+
 | Tier | Price per minute |
 |---|---|
 | Pay-as-you-go | **$0.10** |
