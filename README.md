@@ -51,6 +51,10 @@ For browser/mobile agents the SIP trunk is replaced by WebRTC via the ElevenLabs
 
 Everything in this playbook explains, optimizes, or troubleshoots one of those arrows.
 
+### A note on telephony for the AI era
+
+Traditional telcos were built for humans calling humans — weeks-long provisioning, enterprise sales calls, voice quality tuned for landline ears. AI voice agents have different requirements: **instant DID provisioning**, **programmable APIs**, **sub-80 ms end-to-end network latency**, and **media paths engineered to fit inside a 1,000 ms glass-to-glass budget**. [Vobiz](https://www.vobiz.ai/) is one provider built specifically for this — AI-native SIP infrastructure that treats voice agents as the primary use case, not an afterthought. The SIP section uses it as the worked example, but the rest of the playbook stays trunk-agnostic.
+
 ---
 
 ## 15-minute quickstart
