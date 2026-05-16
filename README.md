@@ -71,45 +71,7 @@ For phone agents: ElevenLabs' SIP endpoint is `sip.rtc.elevenlabs.io`. Point **a
 
 ### 4. Add tools & workflows — [`/tools-and-workflows`](./tools-and-workflows/README.md)
 
-Everything below is **built into the agent's Tools tab in the ElevenLabs dashboard** — links go to the official docs.
-
-#### Built-in [**System tools**](https://elevenlabs.io/docs/agents-platform/customization/tools/system-tools) (toggle on/off per agent)
-
-| Tool | What it does | Official docs |
-|---|---|---|
-| **End conversation** | Agent autonomously hangs up when the conversation is complete | [docs](https://elevenlabs.io/docs/agents-platform/customization/tools/system-tools/end-call) |
-| **Detect language** | Classify the user's spoken language mid-call and switch register | [docs](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/language-detection) |
-| **Skip turn** | Agent intentionally stays silent for a turn (banking pause, sympathetic moment) | [docs](https://elevenlabs.io/docs/agents-platform/customization/tools/system-tools/skip-turn) |
-| **Update state** | Write structured key-value data (e.g. `{"kyc_done": true}`) into per-call state | [docs](https://elevenlabs.io/docs/agents-platform/customization/tools/system-tools) |
-| **Transfer to agent** | Hand off to another ElevenLabs agent with full conversation context | [docs](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/agent-transfer) |
-| **Transfer to number** | SIP REFER the call to a real phone number / human | [docs](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/transfer-to-number) |
-| **Play keypad touch tone** | Generate DTMF digits to navigate downstream IVRs | [docs](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone) |
-| **Voicemail detection** | Classify human pickup vs. voicemail on outbound calls | [docs](https://elevenlabs.io/docs/agents-platform/customization/tools/system-tools/voicemail-detection) |
-
-#### [**Server tools**](https://elevenlabs.io/docs/agents-platform/customization/tools/server-tools) (you define — HTTPS webhooks to your backend)
-Use for anything that needs your data or third-party APIs:
-- CRM lookup by caller phone number
-- KYC / identity verification
-- Order status, payment status, refund processing
-- Calendar booking (Cal.com / Google Calendar)
-- Ticket creation in your support system
-
-The LLM constructs the request, hits your endpoint, and incorporates the response into the conversation.
-
-#### [**Client tools**](https://elevenlabs.io/docs/eleven-agents/customization/tools/client-tools) (frontend SDK only, not for phone)
-Execute functions in the browser / mobile SDK that hosts the agent. DOM manipulation, in-app navigation, reading frontend state. Not applicable to PSTN calls.
-
-#### [**MCP tools**](https://elevenlabs.io/docs/eleven-agents/customization/tools/mcp) (external tool surface)
-Bring a Model Context Protocol server into the agent at runtime. Examples:
-- **Zapier MCP** — one integration → 7,000+ apps as tools
-- **Custom MCP** — your own internal platform exposed as a single MCP
-
-Configurable approval modes (Always Ask / Fine-grained / No Approval). **Note:** MCP is not supported in Zero-Retention or HIPAA deployments.
-
-#### [**Workflows**](https://elevenlabs.io/docs/agents-platform/customization/agent-workflows) (visual graph for multi-intent / branching)
-Use when a single agent's prompt is becoming an `IF this THEN that` tangle. Each node has its own system prompt, voice, tools, LLM. Transitions are conditional (intent classification, tool return value, LLM decision). Recommended for support + sales + KYC on the same DID — each as a specialist agent with clean handoffs.
-
-#### Reference: [official Tools overview](https://elevenlabs.io/docs/agents-platform/customization/tools)
+ElevenLabs exposes 4 tool types built into the agent's **Tools** tab: **system tools** (8 toggles like end-call, transfer, voicemail detection), **server tools** (your webhooks), **client tools** (browser/mobile SDK only), and **MCP tools**. Plus **workflows** for multi-intent branching. Deep dive in [`/tools-and-workflows`](./tools-and-workflows/README.md).
 
 ### 5. Test & instrument — [`/production-best-practices`](./production-best-practices/README.md)
 
